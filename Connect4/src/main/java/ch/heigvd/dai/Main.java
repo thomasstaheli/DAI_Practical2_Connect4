@@ -5,8 +5,6 @@ public class Main {
         System.out.println("Hello world!");
         GameBoard gameBoard= new GameBoard(5,5);
         gameBoard.showGameBoard();
-        gameBoard.addSlot(GameBoard.Slot.RED,0);
-        gameBoard.addSlot(GameBoard.Slot.RED,0);
-        gameBoard.showGameBoard();
+        GameBoard.GameEnding ending = gameBoard.GameLoop();
     }
 }
