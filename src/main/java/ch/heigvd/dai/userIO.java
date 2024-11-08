@@ -15,8 +15,6 @@ public class userIO {
         input = scanner.nextInt();
         validInput = input >= minValue && input <= maxValue;
       }
-
-
     }
     while(!validInput); //had to create a var because I can't put the hasNextInt here,
     // it cannot scan for the first time
