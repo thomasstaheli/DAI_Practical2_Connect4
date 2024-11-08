@@ -5,11 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="33a6f1c5-bba6-445a-9470-93b24b1d85aa" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Direction.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/userIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Main.java" afterDir="false" />
+    </list>
+    <list id="f7db3474-6934-4147-adac-4bb191e08576" name="Changes by thoma" comment="">
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -26,10 +28,28 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 4
-}]]></component>
+  <component name="LineStatusTrackerManager">
+    <file path="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java">
+      <ranges>
+        <range start1="25" end1="26" start2="25" end2="32" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+        <range start1="27" end1="27" start2="33" end2="35" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+        <range start1="28" end1="29" start2="36" end2="52" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+        <range start1="30" end1="31" start2="53" end2="61" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+        <range start1="57" end1="57" start2="87" end2="88" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+        <range start1="67" end1="67" start2="98" end2="102" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+        <range start1="68" end1="69" start2="103" end2="107" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+        <range start1="89" end1="90" start2="127" end2="128" changelist="f7db3474-6934-4147-adac-4bb191e08576" />
+        <range start1="91" end1="93" start2="129" end2="131" changelist="f7db3474-6934-4147-adac-4bb191e08576" />
+        <range start1="95" end1="97" start2="133" end2="135" changelist="f7db3474-6934-4147-adac-4bb191e08576" />
+        <range start1="124" end1="124" start2="162" end2="174" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+        <range start1="125" end1="125" start2="175" end2="177" changelist="33a6f1c5-bba6-445a-9470-93b24b1d85aa" />
+      </ranges>
+    </file>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 4
+}</component>
   <component name="ProjectId" id="2oU0TNkmGrnbcfWemk0jv6NedfX" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -67,6 +87,8 @@
       <option name="presentableId" value="Default" />
       <updated>1730908853791</updated>
       <workItem from="1730908855493" duration="5370000" />
+      <workItem from="1731052377217" duration="1517000" />
+      <workItem from="1731054449410" duration="3754000" />
     </task>
     <servers />
   </component>

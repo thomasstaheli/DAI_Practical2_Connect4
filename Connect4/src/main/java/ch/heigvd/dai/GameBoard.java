@@ -23,12 +23,42 @@ public class GameBoard {
         this.fillGameBoard(Slot.EMPTY);
     }
 
-    void showGameBoard(){
+    void showGameBoard() {
+        // Top border (using corners and horizontal lines)
+        for (int j = 0; j < width; j++) {
+            System.out.print("+----");
+        }
+        System.out.println("+");
+
         for (int i = 0; i < height; i++) {
+            // Row content
+            System.out.print("|");
             for (int j = 0; j < width; j++) {
-                System.out.print(board[i][j] + " ");
+                String cellContent = "";
+                switch (board[i][j]) {
+                    case RED:
+                        cellContent = "\uD83D\uDD34";
+                        break;
+                    case YELLOW:
+                        cellContent = "\uD83D\uDD35";
+                        break;
+                    case EMPTY:
+                        cellContent = " ";
+                        break;
+                    default:
+                        break;
+                }
+                // Make sure each cell is 3 characters wide (including space padding)
+                System.out.print(" " + String.format("%-3s", cellContent) + "|");
             }
-            System.out.println("\n");
+            System.out.println();
+
+            // Row separator
+            //System.out.print("");
+            for (int j = 0; j < width; j++) {
+                System.out.print("+----");
+            }
+            System.out.println("+");
         }
     }
 
@@ -55,6 +85,7 @@ public class GameBoard {
     }
 
     boolean checkDirection(int column, int row, Direction direction, Slot turn){
+        int alignedSlots=0;
         for (int i = column; i <winLength; i++) {
 
             int newRow = row + (i * direction.getYIncrement());
@@ -65,8 +96,15 @@ public class GameBoard {
             {
                 return false;
             }
+            else
+            {
+                ++alignedSlots;
+            }
         }
-        return true;
+        if(alignedSlots==winLength){
+            return true;
+        }
+        else return false;
     }
 
     boolean checkAllDirections(int column, int row, Slot turn){
@@ -87,14 +125,14 @@ public class GameBoard {
             {
                 return GameEnding.DRAW;
             }
-            int chosenColumn=userIO.getIntInput(0,width-1);
+            int chosenColumn = userIO.getIntInput(0,width - 1);
 
-            int chosenRow=addSlot(currentTurn,chosenColumn);
-            while (chosenRow==-1)//get another column if full
+            int chosenRow = addSlot(currentTurn,chosenColumn);
+            while (chosenRow == -1)//get another column if full
             {
                 System.out.println("Cette colomne est complète, veuillez en choisir une autre.");
-                chosenColumn=userIO.getIntInput(0,width-1);
-                chosenRow=addSlot(currentTurn,chosenColumn);
+                chosenColumn = userIO.getIntInput(0, width - 1);
+                chosenRow = addSlot(currentTurn,chosenColumn);
             }
 
 
@@ -122,4 +160,18 @@ public class GameBoard {
         }
         while (true);
     }
+
+    public void GameOver(GameEnding gameEnding){
+        switch (gameEnding){
+            case RED_WINS:
+                showGameBoard();
+                break;
+            case YELLOW_WINS:
+                    showGameBoard();
+                    break;
+            case DRAW:
+        }
+    }
 }
+
+
