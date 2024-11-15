@@ -86,10 +86,15 @@ public class Display {
       }
 
       // TODO improve
-      GameBoard.GameStatus gameStatus = game.checkWinCondition(chosenRow, chosenColumn);
-      if(gameStatus == GameBoard.GameStatus.BLUE_WINS || gameStatus == GameBoard.GameStatus.RED_WINS) {
+      GameBoard.GameStatus gameStatus = game.checkWinCondition(chosenColumn, chosenRow);
+      if(gameStatus != GameBoard.GameStatus.GAME_CONTINUE) {
+        // Display board with the win
+        this.showGameBoard();
+        System.out.print(gameStatus == GameBoard.GameStatus.BLUE_WINS ? "Blue " : "Red ");
+        System.out.println("player WIN !");
         return gameStatus;
       }
+
       // Changing the turn
       game.invertPlayerTurn();
 

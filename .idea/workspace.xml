@@ -5,11 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="f4e76886-5405-4bb9-ae6c-6200243be0ee" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Display.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Display.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/userIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/userIO.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -38,8 +36,10 @@
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
     "Application.Main.executor": "Run",
-    "Application.Run main.executor": "Run",
+    "Application.Run main.executor": "Debug",
+    "Maven.Package application as JAR file.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "3-create-the-basic-connect4-logic",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "//wsl.localhost/Ubuntu/home/thomas/IdeaProjects/DAI_labo1_CLI_Image_Manager",
@@ -121,7 +121,8 @@
       <workItem from="1731055314929" duration="33000" />
       <workItem from="1731060100920" duration="2287000" />
       <workItem from="1731421064012" duration="174000" />
-      <workItem from="1731658686185" duration="5400000" />
+      <workItem from="1731658686185" duration="7048000" />
+      <workItem from="1731686968200" duration="1632000" />
     </task>
     <servers />
   </component>

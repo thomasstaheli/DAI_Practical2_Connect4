@@ -53,16 +53,18 @@ public class GameBoard {
     return -1;
   }
 
-  boolean checkDirection(int column, int row, Direction direction, Slot turn){
-    int alignedSlots = 0;
+  boolean checkDirection(int column, int row, Direction direction){
+    // alignedSlots start with 1 because we have to count the actual dot
+    int alignedSlots = 1;
 
-    for (int i = column; i < winLength; i++) {
+    for (int i = 1; i < winLength; i++) {
 
       int newRow = row + (i * direction.getYIncrement());
       int newColumn = column + (i * direction.getXIncrement());
 
-      if (newRow < 0 || newRow >= height || newColumn < 0 || newColumn >= width || //checking for board bounds
-              board[newRow][newColumn] != turn) { //checking for the right color
+      //checking for board bounds
+      if (newRow < 0 || newRow >= height || newColumn < 0 || newColumn >= width ||
+        board[newRow][newColumn] != this.playerTurn) { //checking for the right color
         return false;
       }
       else {
@@ -73,10 +75,10 @@ public class GameBoard {
     return alignedSlots >= winLength;
   }
 
-  boolean checkAllDirections(int column, int row, Slot turn) {
+  boolean checkAllDirections(int column, int row) {
 
     for (Direction direction : Direction.values()) {
-      if(checkDirection(column, row, direction, turn)) {
+      if(checkDirection(column, row, direction)) {
         return true;
       }
     }
@@ -90,7 +92,7 @@ public class GameBoard {
 
   public GameStatus checkWinCondition(int chosenColumn, int chosenRow) {
 
-    if(this.checkAllDirections(chosenColumn, chosenRow, this.playerTurn)) {
+    if(this.checkAllDirections(chosenColumn, chosenRow)) {
       return playerTurn == Slot.RED ? GameStatus.RED_WINS : GameStatus.BLUE_WINS;
     }
 
