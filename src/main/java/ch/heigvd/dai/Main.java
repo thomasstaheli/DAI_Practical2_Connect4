@@ -4,9 +4,15 @@ import ch.heigvd.dai.GameBoard;
 
 public class Main {
   public static void main(String[] args) {
-    System.out.println("Hello world ! \uD83D\uDCA6");
-    GameBoard gameBoard= new GameBoard(5,5);
-    gameBoard.showGameBoard();
-    GameBoard.GameEnding ending = gameBoard.GameLoop();
+
+    final int heightBoard = 5;
+    final int widthBoard  = 5;
+    final int winLength   = 4;
+
+    GameBoard gameBoard = new GameBoard(heightBoard,widthBoard, winLength);
+    Display display     = new Display(gameBoard);
+    // TODO: Improve
+    // We can return a void and treat the victory in the class, so we have nothing to return
+    GameBoard.GameStatus gameStatus = display.GameLoop();
   }
 }

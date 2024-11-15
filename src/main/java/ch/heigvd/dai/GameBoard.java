@@ -1,68 +1,40 @@
 package ch.heigvd.dai;
 
-import ch.heigvd.dai.Direction;
-import ch.heigvd.dai.userIO;
+
 
 public class GameBoard {
-  int height;
-  int width;
-  int winLength = 4; //TODO add it as input
-  enum Slot{
-    RED, YELLOW, EMPTY
-  }
-  enum GameEnding{
-    RED_WINS, YELLOW_WINS, DRAW
-  }
-  Slot beginningTurn = Slot.RED;
-  Slot[][] board;
 
-  GameBoard(int height, int width){
+  private final int height;
+  private final int width;
+  private final int winLength;
+
+  public enum Slot {
+    RED, BLUE, EMPTY
+  }
+
+  public enum GameStatus {
+    RED_WINS, BLUE_WINS, DRAW, GAME_CONTINUE
+  }
+
+  private Slot playerTurn;
+  private final Slot[][] board;
+  private final int maxTurns;
+  private final int countTurnPlayed;
+
+  GameBoard(int height, int width, int winLength){
     this.height = height;
     this.width = width;
     this.board = new Slot[height][width];
+
+    this.winLength = winLength;
+    this.playerTurn = Slot.RED;
+    this.countTurnPlayed = 0;
+    this.maxTurns = this.height * this.width;
+
     this.fillGameBoard(Slot.EMPTY);
   }
 
-  void showGameBoard() {
-    // Top border (using corners and horizontal lines)
-    for (int j = 0; j < width; j++) {
-      System.out.print("+----");
-    }
-    System.out.println("+");
-
-    for (int i = 0; i < height; i++) {
-      // Row content
-      System.out.print("|");
-      for (int j = 0; j < width; j++) {
-        String cellContent = "";
-        switch (board[i][j]) {
-          case RED:
-            cellContent = "\uD83D\uDD34";
-            break;
-          case YELLOW:
-            cellContent = "\uD83D\uDD35";
-            break;
-          case EMPTY:
-            cellContent = " ";
-            break;
-          default:
-            break;
-        }
-        // Make sure each cell is 3 characters wide (including space padding)
-        System.out.print(" " + String.format("%-3s", cellContent) + "|");
-      }
-      System.out.println();
-
-      // Row separator
-      //System.out.print("");
-      for (int j = 0; j < width; j++) {
-        System.out.print("+----");
-      }
-      System.out.println("+");
-    }
-  }
-
-  void fillGameBoard(Slot slot){
+  void fillGameBoard(Slot slot) {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         board[i][j] = slot;
@@ -70,108 +42,77 @@ public class GameBoard {
     }
   }
 
-  int addSlot(Slot slot,int column){ //returns a true if there was an empty slot available
-    for (int i = height-1; i >= 0; i--) {
+  int addSlot(int column) {
+    //returns a true if there was an empty slot available
+    for (int i = height - 1; i >= 0; i--) {
       if (board[i][column] == Slot.EMPTY){
-        board[i][column] = slot;
+        board[i][column] = this.playerTurn;
         return i;
       }
     }
     return -1;
   }
 
-  boolean Aligned(int column, int row, Slot turn){
-    return board[row][column] == turn;
-  }
-
   boolean checkDirection(int column, int row, Direction direction, Slot turn){
-    int alignedSlots=0;
-    for (int i = column; i <winLength; i++) {
+    int alignedSlots = 0;
+
+    for (int i = column; i < winLength; i++) {
 
       int newRow = row + (i * direction.getYIncrement());
       int newColumn = column + (i * direction.getXIncrement());
 
       if (newRow < 0 || newRow >= height || newColumn < 0 || newColumn >= width || //checking for board bounds
-              board[newRow][newColumn] != turn) //checking for the right color
-      {
+              board[newRow][newColumn] != turn) { //checking for the right color
         return false;
       }
-      else
-      {
+      else {
         ++alignedSlots;
       }
     }
-    if(alignedSlots==winLength){
-      return true;
-    }
-    else return false;
+    // >= because at we can have a line of 5 connected but only 4 tokens are needed
+    return alignedSlots >= winLength;
   }
 
-  boolean checkAllDirections(int column, int row, Slot turn){
-    for (Direction direction :Direction.values()){
-      if(checkDirection(column, row, direction, turn)){
+  boolean checkAllDirections(int column, int row, Slot turn) {
+
+    for (Direction direction : Direction.values()) {
+      if(checkDirection(column, row, direction, turn)) {
         return true;
       }
     }
     return false;
+
   }
 
-  GameEnding GameLoop(){
-    Slot currentTurn = beginningTurn;
-    int turnsPlayed = 0;
-    int maxTurns = height * width;
-    do{
-      if(turnsPlayed >= maxTurns) //game board is full
-      {
-        return GameEnding.DRAW;
-      }
-      int chosenColumn = userIO.getIntInput(0,width - 1);
+  public void invertPlayerTurn() {
+    this.playerTurn = this.playerTurn == Slot.RED ? Slot.BLUE : Slot.RED;
+  }
 
-      int chosenRow = addSlot(currentTurn,chosenColumn);
-      while (chosenRow == -1)//get another column if full
-      {
-        System.out.println("Cette colomne est complète, veuillez en choisir une autre.");
-        chosenColumn = userIO.getIntInput(0, width - 1);
-        chosenRow = addSlot(currentTurn,chosenColumn);
-      }
+  public GameStatus checkWinCondition(int chosenColumn, int chosenRow) {
 
-
-      if(checkAllDirections(chosenColumn,chosenRow,currentTurn)){
-
-        if(currentTurn == Slot.RED){
-          return GameEnding.RED_WINS;
-        }
-
-        if(currentTurn == Slot.YELLOW){
-          return GameEnding.YELLOW_WINS;
-        }
-      }
-      // Changing the turn
-      if(currentTurn == Slot.RED)
-      {
-        currentTurn = Slot.YELLOW;
-      }
-      else if(currentTurn == Slot.YELLOW)
-      {
-        currentTurn = Slot.RED;
-      }
-      showGameBoard();
-
+    if(this.checkAllDirections(chosenColumn, chosenRow, this.playerTurn)) {
+      return playerTurn == Slot.RED ? GameStatus.RED_WINS : GameStatus.BLUE_WINS;
     }
-    while (true);
+
+    return GameStatus.GAME_CONTINUE;
   }
 
-  public void GameOver(GameEnding gameEnding){
-    switch (gameEnding){
-      case RED_WINS:
-        showGameBoard();
-        break;
-      case YELLOW_WINS:
-        showGameBoard();
-        break;
-      case DRAW:
-    }
+  public boolean checkDrawCondition() {
+    return this.countTurnPlayed >= this.maxTurns;
   }
+
+  public Slot getBoardSlot(int row, int column) {
+    return board[row][column];
+  }
+
+  public int getHeight() {
+    return this.height;
+  }
+
+  public int getWidth() {
+    return this.width;
+  }
+
 }
 
 
