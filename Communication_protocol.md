@@ -3,8 +3,32 @@
 Pour le travail de laboratoire, nous devons développer une application
 
 # Section 1 - Overview
-
+The "Connect 4" protocol is a communication protocol that allows two clients to play against each 
+other on a board generated and managed by the server.
 # Section 2 - Transport protocol
+The "Connect 4" protocol is a text transport protocol. It uses the TCP transport protocol to ensure the reliability of data transmission. The port it uses is the port number 6433. We selected this port for no particular reason that it isn't used by default and it is the one used for an exercice.
+
+Every message must be encoded in UTF-8 and delimited by a newline character (\n). The messages are treated as text messages.
+
+The initial connection must be established by the clients.
+
+Once one connection is established, the server gets into a waiting state.
+
+When two players send a ready state, the game can start.
+
+Each client can then take turns to send a column where he wants to place a token.
+
+The server's role is to verify if the received column number is valid (is it even a number?) and in between given bounds.
+
+If these conditions are met, the server will add the token to it's gameboard and process the result before sending the board infos to both player clients.
+
+Otherwise, the server sends an error message to the client.
+
+The error must specify which condition has not been met.
+
+On an unknown message, the server must send an error to both clients.
+
+Once the game ends, the server send a GameOver message to both player clients and wait for X seconds. When the wait is done, the server disconnects both players, the server returns to the waiting state with both players already connected but no ready for the next game. (Maybe disconnect both players so other players can join more easily)
 
 # Section 3 - Messages
 
