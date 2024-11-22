@@ -6,7 +6,7 @@ Pour le travail de laboratoire, nous devons développer une application
 The "Connect 4" protocol is a communication protocol that allows two clients to play against each 
 other on a board generated and managed by the server.
 # Section 2 - Transport protocol
-The "Connect 4" protocol is a text transport protocol. It uses the TCP transport protocol to ensure the reliability of data transmission. The port it uses is the port number 6433. We selected this port for no particular reason that it isn't used by default and it is the one used for an exercice.
+The "Connect 4" protocol is a text transport protocol. It uses the TCP transport protocol to ensure the reliability of data transmission. The port it uses is the port number 6433. We selected this port for no particular reason other that it isn't used by default and it is the one used for an exercice.
 
 Every message must be encoded in UTF-8 and delimited by a newline character (\n). The messages are treated as text messages.
 
