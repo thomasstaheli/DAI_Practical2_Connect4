@@ -50,7 +50,7 @@ READY
 
 - `WAITING` : If the player is the first, he waits for
 another player to join and be ready.
-- `GAME START` : The game starts because two players are ready.
+- `GAME START` : The game starts because two players are ready, and the player who receive this, will play first.
 
 ## Place a token in the grid
 
@@ -63,15 +63,23 @@ where he want to place his token.
 PLACE <colomn number>
 ```
 
-### Response
-
+### Reponse to the player who placed the token
+  
 - `INVALID`      : The desired column is non-existent in the gameboard
 - `COLUMN FULL`  : The desired column is already filled with tokens.
 - `WIN`          : The placed token results in a Win of the player.
-- `LOSE`         : The placed token results in a Loss of the player.
 - `DRAW`         : The placed token fills the gameboard completely resulting in a draw.
-- `TOKEN PLACED` : The placed token is placed propreply in the column,
-the game continues.
+- `TOKEN PLACED` : The placed token is placed propreply in the column, the game continues.
+
+### Reponse to the player who didn't placed the token
+
+The second response is the response that is sent to the other player, to indicate where the
+new token has been placed
+
+- `INSERTED <column number>` : The placed token by the other player is indicated to the waiting player.
+- `GAME CONTINUE` : The placed token by the other player did not succes to a win or a draw, so the game continues.
+- `LOSE`   : The placed token by the other player results in a loss of the game.
+- `DRAW`   : The placed token by the other player results in a draw of the game.
 
 ## Forfeit
 
