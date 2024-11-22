@@ -1,0 +1,25 @@
+@startuml
+
+participant "Client 1" as client1
+participant "Serveur" as server
+participant "Client 2" as client2
+
+== Join the server ==
+
+note right of client1
+The socket is instanciated and the connection is
+automatically etablished
+end note
+client1->server : Establish connection
+server->client1 : Connection established
+client1->server : READY
+server->client1 : WAITING
+
+client2->server : Establish connection
+server->client2 : Connection established
+client2->server : READY
+server->client2 : WAITING
+
+
+
+@enduml

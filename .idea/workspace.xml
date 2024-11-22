@@ -6,8 +6,6 @@
   <component name="ChangeListManager">
     <list default="true" id="f4e76886-5405-4bb9-ae6c-6200243be0ee" name="Changes" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Display.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -40,7 +38,7 @@
     &quot;Maven.Package application as JAR file.executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;3-create-the-basic-connect4-logic&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;2-define-the-application-protocol&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;//wsl.localhost/Ubuntu/home/thomas/IdeaProjects/DAI_labo1_CLI_Image_Manager&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
@@ -51,6 +49,11 @@
     &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="\\wsl.localhost\Ubuntu\home\thomas\IdeaProjects\DAI_Practical2_Connect4" />
+    </key>
+  </component>
   <component name="RunManager" selected="Application.Run main">
     <configuration name="Run main" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="ch.heigvd.dai.Main" />
@@ -123,6 +126,8 @@
       <workItem from="1731421064012" duration="174000" />
       <workItem from="1731658686185" duration="7048000" />
       <workItem from="1731686968200" duration="1632000" />
+      <workItem from="1732270966939" duration="202000" />
+      <workItem from="1732281775112" duration="335000" />
     </task>
     <servers />
   </component>
