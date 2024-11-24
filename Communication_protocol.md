@@ -119,3 +119,11 @@ The error code is as follow:
   - -1: invalid message
 
 # Section 4 - Examples
+
+## Functionnal example
+
+![functionnal_example](./img/protocol_functionnal.png)
+
+## Invalid command or input example
+
+![invalid_example](./img/protocol_invalid_examples.png)
