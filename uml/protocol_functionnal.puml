@@ -1,0 +1,79 @@
+@startuml
+
+participant "Client 1" as client1
+participant "Server" as server
+participant "Client 2" as client2
+
+== Join the server ==
+
+note right of client1
+The socket is instanciated and the connection is
+automatically etablished.
+end note
+
+client1->server : Establish connection
+server<-->client1 : Connection established
+client1->server : READY
+server->client1 : WAITING
+
+client2->server : Establish connection
+server<-->client2 : Connection established
+client2->server : READY
+server->client2 : GAME START
+
+== Loop Placing tokens ==
+
+note right of client1
+The gameboard is set to a 5x5 gameboard
+(index available 0 to 4).
+end note
+
+client2->server : PLACE 0
+server->client2 : TOKEN PLACED
+server->client1 : GAME CONTINUE 
+server->client1 : INSERTED 0
+
+client1->server : PLACE 1
+server->client1 : TOKEN PLACED
+server->client2 : GAME CONTINUE
+server->client2 : INSERTED 1
+
+client2->server : PLACE 0
+server->client2 : TOKEN PLACED 
+server->client1 : INSERTED 0
+
+== And so on, until ... ==
+
+== Placing a winning token ==
+
+note right of client1
+Let's admit the Client 2 placed a token
+and win.
+end note
+
+client2->server : PLACE 0
+server->client2 : TOKEN PLACED 
+server->client1 : LOSE
+server->client1 : INSERTED 0
+
+server->client2 : WIN
+
+== Quit the game ==
+
+note right of client1
+The server wait until the two players
+disconnect, or after a timeout, both
+playerwill be kicked.
+end note
+
+client1->server : QUIT
+server->server : Remove Client 1 from players
+client1<-->server : Connection closed
+
+client2->server : QUIT
+server->server : Remove Client 2 from players
+client2<-->server : Connection closed
+
+
+
+@enduml

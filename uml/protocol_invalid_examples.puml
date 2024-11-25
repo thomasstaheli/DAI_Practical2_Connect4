@@ -1,0 +1,45 @@
+@startuml
+
+participant "Client 1" as client1
+participant "Server" as server
+participant "Client 2" as client2
+
+== Join the server ==
+
+note right of client1
+The socket is instanciated and the connection is
+automatically etablished.
+end note
+
+client1->server : Establish connection
+server<-->client1 : Connection established
+client1->server : READY
+server->client1 : WAITING
+
+client2->server : Establish connection
+server<-->client2 : Connection established
+client2->server : READY
+server->client2 : GAME START
+
+== Invalid entry example ==
+
+note right of client1
+Let's admit that the gameboard
+is a 8x8 board
+end note
+
+client1->server : PLACE -1
+server->client1 : ERROR 1
+
+client1->server : PLACE A
+server->client1 : ERROR 2
+
+client1->server : PLACE 10
+server->client1 : ERROR 1
+
+== Invalid command example ==
+
+client1->server : HELLO WORLD
+server->client1 : ERROR -1
+
+@enduml
