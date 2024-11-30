@@ -3,7 +3,7 @@ package ch.heigvd.dai.commands;
 import picocli.CommandLine;
 
 @CommandLine.Command(
-        description = "A small CLI to apply visual effects on bmp image files.",
+        description = "This is a multiplayer Connect4 game. To play, you will need one server and two clients.",
         version = "1.0.0",
         subcommands = {
                 Client.class,

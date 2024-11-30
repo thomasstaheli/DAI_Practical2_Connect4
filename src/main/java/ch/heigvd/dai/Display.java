@@ -15,21 +15,6 @@ public class Display {
 
   void showGameBoard() {
 
-    // TODO: REMOVE because not working !!!
-    /*
-    try {
-      Process process = Runtime.getRuntime().exec("clear");
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    try {
-      TimeUnit.SECONDS.sleep(1);
-    } catch (Exception e) {
-      System.out.println(e);
-    }
-    */
-
     System.out.print("+----".repeat(displayWidth));
     System.out.println("+");
 
