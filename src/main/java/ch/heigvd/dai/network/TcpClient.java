@@ -1,5 +1,9 @@
 package ch.heigvd.dai.network;
 
+import ch.heigvd.dai.Display;
+import ch.heigvd.dai.GameBoard;
+import ch.heigvd.dai.userIO;
+
 import javax.management.RuntimeOperationsException;
 import java.io.*;
 import java.net.*;
@@ -49,32 +53,112 @@ public class TcpClient {
         System.out.println("[Client " + CLIENT_ID + "] starting with id " + CLIENT_ID);
         System.out.println("[Client " + CLIENT_ID + "] connecting to " + this.host + ":" + PORT);
 
+        int width, height, winLenght;
+        int chosenColumn;
+        int chosenRow;
+
+        GameBoard game;
+        Display display;
+
         try (Socket socket = new Socket(this.host, PORT);
              BufferedReader in =
                      new BufferedReader(
                              new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
              BufferedWriter out =
                      new BufferedWriter(
-                             new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8)); ) {
-            System.out.println("[Client " + CLIENT_ID + "] connected to " + this.host + ":" + PORT);
-            System.out.println(
-                    "[Client "
-                            + CLIENT_ID
-                            + "] sending textual data to server "
-                            + this.host
-                            + ":"
-                            + PORT
-                            + ": "
-                            + TEXTUAL_DATA);
+                             new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8))) {
 
-            out.write(TEXTUAL_DATA + "\n");
-            out.flush();
+            System.out.println("[Client " + CLIENT_ID + "] connected to " + this.host + ":" + PORT);
+
+            // READ width height winlenght ...
+            System.out.println("Waiting for Server, to send height, widht and len win to start the game.");
+            String message  = in.readLine();
+            String[] parses = message.split(" ");
+            // Check for [0] ? if it is a command
+            height    = Integer.parseInt(parses[1]);
+            width     = Integer.parseInt(parses[2]);
+            winLenght = Integer.parseInt(parses[3]);
+            System.out.println("SUCCES ! Width = " + width + ", Height = " + height + ", Win Lenght = " + winLenght);
+
+            // Game part
+            System.out.println("Init the boardgame and display ...");
+            game = new GameBoard(height, width, winLenght);
+            display = new Display(game);
+
+            // Waiting until the game start
+            System.out.println("Waiting for another player ...");
+            // Receive PLAY or WAIT
+            String playerTurn = in.readLine();
+
+            if(playerTurn.equals("PLAY")) {
+                System.out.println("Game Start and you start playing ! :D");
+            } else {
+                System.out.println("Game Start and you are waiting first ! :|");
+            }
+
+            do {
+
+                // READ if game continue or not
+                if(playerTurn.equals("PLAY")) {
+                    chosenColumn = userIO.getIntInput(0, width - 1);
+                    chosenRow    = game.addSlot(chosenColumn);
+
+                    while (chosenRow == -1) {
+                        //get another column if full
+                        System.out.println("Cette colonne est complète, veuillez en choisir une autre.");
+                        chosenColumn = userIO.getIntInput(0, width - 1);
+                        chosenRow    = game.addSlot(chosenColumn);
+                    }
+                    // PLACE <column>
+                    System.out.println("PLACE " + chosenColumn + "\n");
+                    out.write("PLACE " + chosenColumn + "\n");
+                    out.flush();
+
+                    System.out.println("Waiting for server response ...");
+                    if(in.readLine().equals("TOKEN_PLACED")) {
+                        System.out.println("TOKEN_PLACED");
+                    } else {
+                        System.out.println("ERROR : message unknown");
+                    }
+
+                    playerTurn = "WAIT";
+
+                } else {
+                    System.out.println("Waiting other player is placing ...");
+                    // INSERTED <column>
+                    message = in.readLine();
+                    if(!message.equals("GAME_CONTINUE")) {
+                        // victoire ou draw
+                        break;
+                    }
+
+                    System.out.println("Waiting for INSERTED command");
+                    message = in.readLine();
+                    parses = message.split(" ");
+                    // INSERTED <column>
+                    game.addSlot(Integer.parseInt(parses[1]));
+
+                    playerTurn = "PLAY";
+                }
+
+                // Changing the turn
+                game.invertPlayerTurn();
+                display.showGameBoard();
+
+            } while (true);
+
+            if(message.equals("WIN")) {
+                System.out.println("YOU WIN !!");
+            } else {
+                System.out.println("YOU LOSE !!");
+            }
 
             System.out.println("[Client " + CLIENT_ID + "] response from server: " + in.readLine());
-
             System.out.println("[Client " + CLIENT_ID + "] closing connection");
+
         } catch (IOException e) {
             System.out.println("[Client " + CLIENT_ID + "] exception: " + e);
         }
     }
+
 }

@@ -2,18 +2,18 @@ package ch.heigvd.dai;
 
 public class Display {
 
-  GameBoard game;
+  private GameBoard game;
   private final int displayWidth;
   private final int displayHeight;
 
-  Display(GameBoard game) {
+  public Display(GameBoard game) {
     this.game = game;
     this.displayWidth  = game.getWidth();
     this.displayHeight = game.getHeight();
     this.showGameBoard();
   }
 
-  void showGameBoard() {
+  public void showGameBoard() {
 
     System.out.print("+----".repeat(displayWidth));
     System.out.println("+");
@@ -49,6 +49,8 @@ public class Display {
     }
   }
 
+  // Exemple : Supprimer cette methode pour que de chaque coté on ait une game loop différente selon
+  // le serveur et le client
   public GameBoard.GameStatus GameLoop() {
 
     int chosenColumn;

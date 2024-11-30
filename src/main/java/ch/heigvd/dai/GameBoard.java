@@ -1,7 +1,5 @@
 package ch.heigvd.dai;
 
-
-
 public class GameBoard {
 
   private final int height;
@@ -20,8 +18,10 @@ public class GameBoard {
   private final Slot[][] board;
   private final int maxTurns;
   private final int countTurnPlayed;
+  private GameStatus gameStatus;
+  private int userChoosenColumn;
 
-  GameBoard(int height, int width, int winLength){
+  public GameBoard(int height, int width, int winLength) {
     this.height = height;
     this.width = width;
     this.board = new Slot[height][width];
@@ -30,11 +30,13 @@ public class GameBoard {
     this.playerTurn = Slot.RED;
     this.countTurnPlayed = 0;
     this.maxTurns = this.height * this.width;
+    this.gameStatus = GameStatus.GAME_CONTINUE;
+    this.userChoosenColumn = -1;
 
     this.fillGameBoard(Slot.EMPTY);
   }
 
-  void fillGameBoard(Slot slot) {
+  private void fillGameBoard(Slot slot) {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         board[i][j] = slot;
@@ -42,7 +44,7 @@ public class GameBoard {
     }
   }
 
-  int addSlot(int column) {
+  public int addSlot(int column) {
     //returns a true if there was an empty slot available
     for (int i = height - 1; i >= 0; i--) {
       if (board[i][column] == Slot.EMPTY){
@@ -53,7 +55,7 @@ public class GameBoard {
     return -1;
   }
 
-  boolean checkDirection(int column, int row, Direction direction){
+  private boolean checkDirection(int column, int row, Direction direction){
     // alignedSlots start with 1 because we have to count the actual dot
     int alignedSlots = 1;
 
@@ -64,7 +66,7 @@ public class GameBoard {
 
       //checking for board bounds
       if (newRow < 0 || newRow >= height || newColumn < 0 || newColumn >= width ||
-        board[newRow][newColumn] != this.playerTurn) { //checking for the right color
+              board[newRow][newColumn] != this.playerTurn) { //checking for the right color
         return false;
       }
       else {
@@ -75,7 +77,7 @@ public class GameBoard {
     return alignedSlots >= winLength;
   }
 
-  boolean checkAllDirections(int column, int row) {
+  private boolean checkAllDirections(int column, int row) {
 
     for (Direction direction : Direction.values()) {
       if(checkDirection(column, row, direction)) {
@@ -115,6 +117,17 @@ public class GameBoard {
     return this.width;
   }
 
+  public Slot getPlayerTurn() {
+    return this.playerTurn;
+  }
+
+  public int getChosenColumn() {
+    return this.userChoosenColumn;
+  }
+
+  public void setChosenColumn(int chosenColumn) {
+    this.userChoosenColumn = chosenColumn;
+  }
 }
 
 
