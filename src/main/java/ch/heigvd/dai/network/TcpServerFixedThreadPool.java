@@ -2,7 +2,7 @@ package ch.heigvd.dai.network;
 
 import ch.heigvd.dai.Display;
 import ch.heigvd.dai.GameBoard;
-import ch.heigvd.dai.UserIO;
+import ch.heigvd.dai.util.UserIO;
 
 import java.io.*;
 import java.net.*;
@@ -18,11 +18,13 @@ public class TcpServerFixedThreadPool {
   private static final int SERVER_ID = (int) (Math.random() * 1000000);
   private static final int NUMBER_OF_THREADS = 2;
 
-  private static final int height = 5;
-  private static final int width = 5;
-  private static final int winLenght = 4;
+  private static final int ERROR_INV_COMMAND  = -1;
+  private static final int ERROR_NOT_A_NUMBER = 1;
+  private static final int ERROR_OUT_OF_INDEX = 2;
+  private static final int ERROR_COLUMN_FULL  = 3;
 
-  public TcpServerFixedThreadPool() {
+  public TcpServerFixedThreadPool(int height, int width, int winLenght) {
+
 
     int numberOfPlayerConnected = 0;
     ClientHandler[] playerConnected = new ClientHandler[NUMBER_OF_THREADS];
@@ -119,7 +121,7 @@ public class TcpServerFixedThreadPool {
 
         // Send the ruleset to the client
         System.out.println("Sending him instructions of the game ...");
-        String initMessage = "INIT " + height + " " + width + " " + winLenght + "\n";
+        String initMessage = "INIT " + game.getHeight() + " " + game.getWidth() + " " + game.getWinLength() + "\n";
         out.write(initMessage);
         out.flush();
 
@@ -142,19 +144,58 @@ public class TcpServerFixedThreadPool {
 
           if(game.getPlayerTurn() == this.playerColor) {
 
-            System.out.println("Waiting PLACE command ...");
-            message = in.readLine();
-            parses = message.split(" ");
+            boolean errorOccurred;
+            do {
 
-            if(parses[0].equals("PLACE")) {
-              sharedInput.setChosenColum(Integer.parseInt(parses[1]));
-              // The addSlot method return the row, where the token was placed
-              sharedInput.setChosenRow(game.addSlot(sharedInput.getChosenColum()));
-              out.write("TOKEN_PLACED" + "\n");
-              out.flush();
-            } else {
-              System.out.println("ERROR : Player did not send PLACE command");
-            }
+              System.out.println("Waiting PLACE command ...");
+              message = in.readLine();
+              parses = message.split(" ");
+
+              if (parses[0].equals("PLACE") && parses.length == 2) {
+                try {
+                  // Check if we can convert the string to a number
+                  int number = Integer.parseInt(parses[1]);
+                  // Check if the index sent is valid to enter the game board
+                  if(UserIO.isInputValid(number, 0, game.getWidth() - 1)) {
+                    sharedInput.setChosenColum(number);
+                    // The addSlot method return the row, where the token was placed
+                    number = game.addSlot(sharedInput.getChosenColum());
+                    if(number != -1) {
+                      sharedInput.setChosenRow(number);
+                      out.write("TOKEN_PLACED" + "\n");
+                      out.flush();
+                      errorOccurred = false;
+                    } else {
+                      System.out.println("ERROR OUT OF INDEX");
+                      out.write("ERROR " + ERROR_COLUMN_FULL + "\n");
+                      out.flush();
+                      errorOccurred = true;
+                    }
+                  } else {
+                    System.out.println("ERROR OUT OF INDEX");
+                    out.write("ERROR " + ERROR_OUT_OF_INDEX + "\n");
+                    out.flush();
+                    errorOccurred = true;
+                  }
+                } catch (NumberFormatException e) {
+                  // The string can't be converted to an int
+                  System.out.println("ERROR : Player has to put a number.");
+                  out.write("ERROR " + ERROR_NOT_A_NUMBER + "\n");
+                  out.flush();
+                  errorOccurred = true;
+                }
+              } else if(parses[0].equals("FF")) {
+                System.out.println("User want to ff !!");
+                // TODO send back a cmd
+                errorOccurred = false;
+              }
+              else {
+                out.write("ERROR " + ERROR_INV_COMMAND + "\n");
+                out.flush();
+                errorOccurred = true;
+                System.out.println("ERROR : Player did not send PLACE command");
+              }
+            } while (errorOccurred);
 
             display.showGameBoard();
 
@@ -165,12 +206,10 @@ public class TcpServerFixedThreadPool {
             game.invertPlayerTurn();
 
           } else {
-
             System.out.println("Waiting for player turn ...");
             while(game.getPlayerTurn() != this.playerColor) {
               TimeUnit.MILLISECONDS.sleep(500);
             }
-            // C'est à son tour de joueur
           }
 
           // Condition de jeu, afin de savoir s'il est terminé ou s'il continue

@@ -1,5 +1,7 @@
 package ch.heigvd.dai;
 
+import ch.heigvd.dai.util.UserIO;
+
 public class Display {
 
   private GameBoard game;
@@ -49,8 +51,6 @@ public class Display {
     }
   }
 
-  // Exemple : Supprimer cette methode pour que de chaque coté on ait une game loop différente selon
-  // le serveur et le client
   public GameBoard.GameStatus GameLoop() {
 
     int chosenColumn;

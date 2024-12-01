@@ -1,4 +1,4 @@
-package ch.heigvd.dai;
+package ch.heigvd.dai.util;
 
 import java.util.Scanner;
 
@@ -13,6 +13,19 @@ public class UserIO {
     this.choosenRow   = DEFAULT_VALUE;
   }
 
+  static public boolean isInputValid(int input, int min, int max) {
+    if(input >= min && input <= max) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  static public String getUserInput() {
+    Scanner sc = new Scanner(System.in);
+    return sc.nextLine();
+  }
+
   static public int getIntInput(int minValue, int maxValue) {
     // must initialize to avoid error (var might not have been initialized)
     int input = 0;
@@ -21,7 +34,7 @@ public class UserIO {
     boolean validInput = false;
 
     do {
-      System.out.println("Veuillez choisir un numéro de colonne entre "+minValue+" et "+maxValue);
+      System.out.println("Veuillez choisir un numéro de colonne entre " + minValue + " et " + maxValue);
 
       if(scanner.hasNextInt()) {
         input = scanner.nextInt();

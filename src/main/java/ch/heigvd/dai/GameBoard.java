@@ -1,5 +1,7 @@
 package ch.heigvd.dai;
 
+import ch.heigvd.dai.util.Direction;
+
 public class GameBoard {
 
   private final int height;
@@ -131,6 +133,10 @@ public class GameBoard {
 
   public GameStatus getGameStatus() {
     return this.gameStatus;
+  }
+
+  public int getWinLength() {
+    return this.winLength;
   }
 
 }
