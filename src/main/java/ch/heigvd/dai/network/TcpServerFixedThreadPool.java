@@ -126,7 +126,7 @@ public class TcpServerFixedThreadPool {
         // Synchronise the start of the two client
         while (!this.isGameStarting) {
           // I had to put a sleep here to avoid the compiler optimisation of this while
-          TimeUnit.MILLISECONDS.sleep(10);
+          TimeUnit.MILLISECONDS.sleep(100);
         }
 
         System.out.println("Sending ... " + SERVER_ID);
@@ -136,8 +136,9 @@ public class TcpServerFixedThreadPool {
 
         String message;
         String[] parses;
+        boolean quit = false;
 
-        while(true) {
+        while(!quit) {
 
           if(game.getPlayerTurn() == this.playerColor) {
 
@@ -149,7 +150,6 @@ public class TcpServerFixedThreadPool {
               sharedInput.setChosenColum(Integer.parseInt(parses[1]));
               // The addSlot method return the row, where the token was placed
               sharedInput.setChosenRow(game.addSlot(sharedInput.getChosenColum()));
-              System.out.println("COLUM : " + sharedInput.getChosenColum() + " ROW : " + sharedInput.getChosenRow());
               out.write("TOKEN_PLACED" + "\n");
               out.flush();
             } else {
@@ -158,9 +158,7 @@ public class TcpServerFixedThreadPool {
 
             display.showGameBoard();
 
-            if(game.checkDrawCondition()) {
-              System.out.println("DRAW");
-            } else {
+            if(!game.checkDrawCondition()) {
               game.checkWinCondition(sharedInput.getChosenColum(), sharedInput.getChosenRow());
             }
 
@@ -186,19 +184,26 @@ public class TcpServerFixedThreadPool {
             System.out.println("GAME DRAW !");
             out.write("DRAW" + "\n");
             out.flush();
-            break;
+            quit = true;
           } else if(game.getGameStatus() == GameBoard.GameStatus.BLUE_WINS) {
             System.out.println("GAME BLUE_WINS !");
-            out.write(playerColor == GameBoard.Slot.BLUE ? "WIN" : "LOSE");
+            out.write((playerColor == GameBoard.Slot.BLUE ? "WIN" : "LOSE") + "\n");
             out.flush();
-            break;
+            quit = true;
           } else if(game.getGameStatus() == GameBoard.GameStatus.RED_WINS) {
             System.out.println("GAME RED_WINS !");
-            out.write(playerColor == GameBoard.Slot.RED ? "WIN" : "LOSE");
+            out.write((playerColor == GameBoard.Slot.RED ? "WIN" : "LOSE") + "\n");
             out.flush();
-            break;
+            quit = true;
           }
 
+          if(quit) {
+            if(game.getPlayerTurn() == this.playerColor) {
+              out.write("INSERTED " + sharedInput.getChosenColum() + "\n");
+              out.flush();
+            }
+            break;
+          }
         }
 
         isGameFinished = true;

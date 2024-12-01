@@ -148,11 +148,15 @@ public class TcpClient {
             if(message.equals("WIN")) {
                 System.out.println("YOU WIN !!");
             } else {
+                message = in.readLine();
+                parses = message.split(" ");
+                // INSERTED <column>
+                game.addSlot(Integer.parseInt(parses[1]));
+                System.out.println("The other player placed his token in column " + Integer.parseInt(parses[1]));
                 display.showGameBoard();
                 System.out.println("YOU LOSE !!");
             }
 
-            System.out.println("[Client " + CLIENT_ID + "] response from server: " + in.readLine());
             System.out.println("[Client " + CLIENT_ID + "] closing connection");
 
         } catch (IOException e) {

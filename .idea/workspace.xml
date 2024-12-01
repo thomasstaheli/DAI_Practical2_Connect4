@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="f4e76886-5405-4bb9-ae6c-6200243be0ee" name="Changes" comment="test">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/UserIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/UserIO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/network/TcpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/network/TcpClient.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/network/TcpServerFixedThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/network/TcpServerFixedThreadPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/protocol_functionnal.puml" beforeDir="false" afterPath="$PROJECT_DIR$/uml/protocol_functionnal.puml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
