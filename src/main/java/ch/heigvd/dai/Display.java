@@ -62,13 +62,13 @@ public class Display {
         return GameBoard.GameStatus.DRAW;
       }
 
-      chosenColumn = userIO.getIntInput(0, displayWidth - 1);
+      chosenColumn = UserIO.getIntInput(0, displayWidth - 1);
       chosenRow    = game.addSlot(chosenColumn);
 
       while (chosenRow == -1) {
         //get another column if full
         System.out.println("Cette colomne est complète, veuillez en choisir une autre.");
-        chosenColumn = userIO.getIntInput(0, displayWidth - 1);
+        chosenColumn = UserIO.getIntInput(0, displayWidth - 1);
         chosenRow    = game.addSlot(chosenColumn);
       }
 

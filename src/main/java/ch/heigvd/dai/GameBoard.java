@@ -17,9 +17,8 @@ public class GameBoard {
   private Slot playerTurn;
   private final Slot[][] board;
   private final int maxTurns;
-  private final int countTurnPlayed;
+  private int countTurnPlayed;
   private GameStatus gameStatus;
-  private int userChoosenColumn;
 
   public GameBoard(int height, int width, int winLength) {
     this.height = height;
@@ -31,7 +30,6 @@ public class GameBoard {
     this.countTurnPlayed = 0;
     this.maxTurns = this.height * this.width;
     this.gameStatus = GameStatus.GAME_CONTINUE;
-    this.userChoosenColumn = -1;
 
     this.fillGameBoard(Slot.EMPTY);
   }
@@ -49,6 +47,7 @@ public class GameBoard {
     for (int i = height - 1; i >= 0; i--) {
       if (board[i][column] == Slot.EMPTY){
         board[i][column] = this.playerTurn;
+        ++this.countTurnPlayed;
         return i;
       }
     }
@@ -66,7 +65,7 @@ public class GameBoard {
 
       //checking for board bounds
       if (newRow < 0 || newRow >= height || newColumn < 0 || newColumn >= width ||
-              board[newRow][newColumn] != this.playerTurn) { //checking for the right color
+              board[newRow][newColumn] != this.playerTurn) { // checking for the right color
         return false;
       }
       else {
@@ -95,14 +94,23 @@ public class GameBoard {
   public GameStatus checkWinCondition(int chosenColumn, int chosenRow) {
 
     if(this.checkAllDirections(chosenColumn, chosenRow)) {
-      return playerTurn == Slot.RED ? GameStatus.RED_WINS : GameStatus.BLUE_WINS;
+      this.gameStatus = playerTurn == Slot.RED ? GameStatus.RED_WINS : GameStatus.BLUE_WINS;
+      return gameStatus;
     }
 
     return GameStatus.GAME_CONTINUE;
   }
 
   public boolean checkDrawCondition() {
-    return this.countTurnPlayed >= this.maxTurns;
+    boolean drawCondition = this.countTurnPlayed >= this.maxTurns;
+
+    if(drawCondition) {
+      this.gameStatus = GameStatus.DRAW;
+    } else {
+      this.gameStatus = GameStatus.GAME_CONTINUE;
+    }
+
+    return drawCondition;
   }
 
   public Slot getBoardSlot(int row, int column) {
@@ -121,13 +129,10 @@ public class GameBoard {
     return this.playerTurn;
   }
 
-  public int getChosenColumn() {
-    return this.userChoosenColumn;
+  public GameStatus getGameStatus() {
+    return this.gameStatus;
   }
 
-  public void setChosenColumn(int chosenColumn) {
-    this.userChoosenColumn = chosenColumn;
-  }
 }
 
 

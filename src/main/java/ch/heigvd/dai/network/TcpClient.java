@@ -2,9 +2,8 @@ package ch.heigvd.dai.network;
 
 import ch.heigvd.dai.Display;
 import ch.heigvd.dai.GameBoard;
-import ch.heigvd.dai.userIO;
+import ch.heigvd.dai.UserIO;
 
-import javax.management.RuntimeOperationsException;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
@@ -100,13 +99,13 @@ public class TcpClient {
 
                 // READ if game continue or not
                 if(playerTurn.equals("PLAY")) {
-                    chosenColumn = userIO.getIntInput(0, width - 1);
+                    chosenColumn = UserIO.getIntInput(0, width - 1);
                     chosenRow    = game.addSlot(chosenColumn);
 
                     while (chosenRow == -1) {
                         //get another column if full
                         System.out.println("Cette colonne est complète, veuillez en choisir une autre.");
-                        chosenColumn = userIO.getIntInput(0, width - 1);
+                        chosenColumn = UserIO.getIntInput(0, width - 1);
                         chosenRow    = game.addSlot(chosenColumn);
                     }
                     // PLACE <column>
@@ -125,19 +124,19 @@ public class TcpClient {
 
                 } else {
                     System.out.println("Waiting other player is placing ...");
-                    // INSERTED <column>
+                    // GAME_CONTINUE
                     message = in.readLine();
                     if(!message.equals("GAME_CONTINUE")) {
                         // victoire ou draw
                         break;
                     }
 
-                    System.out.println("Waiting for INSERTED command");
                     message = in.readLine();
                     parses = message.split(" ");
                     // INSERTED <column>
                     game.addSlot(Integer.parseInt(parses[1]));
-
+                    System.out.println("The other player placed his token in column " + Integer.parseInt(parses[1]));
+                    System.out.println("This is now your turn ! ");
                     playerTurn = "PLAY";
                 }
 
@@ -150,6 +149,7 @@ public class TcpClient {
             if(message.equals("WIN")) {
                 System.out.println("YOU WIN !!");
             } else {
+                display.showGameBoard();
                 System.out.println("YOU LOSE !!");
             }
 
