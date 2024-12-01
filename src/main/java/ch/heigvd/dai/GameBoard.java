@@ -135,6 +135,10 @@ public class GameBoard {
     return this.gameStatus;
   }
 
+  public void setGameStatus(GameStatus gameStatus) {
+    this.gameStatus = gameStatus;
+  }
+
   public int getWinLength() {
     return this.winLength;
   }

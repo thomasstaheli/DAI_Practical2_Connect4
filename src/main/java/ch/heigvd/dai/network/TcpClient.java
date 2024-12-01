@@ -7,7 +7,6 @@ import ch.heigvd.dai.util.UserIO;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.util.Scanner;
 
 public class TcpClient {
 
@@ -16,25 +15,23 @@ public class TcpClient {
   private static final int CLIENT_ID = (int) (Math.random() * 1000000);
 
   public TcpClient(String ip) throws IllegalArgumentException {
-    // Vérifier que l'adresse IP est non null
+    // Checking the ip addr
     if (ip == null) {
       throw new IllegalArgumentException("L'adresse IP ne peut pas être nulle.");
     }
 
-    // Diviser l'IP par les points
     String[] parts = ip.split("\\.");
 
-    // Vérifier qu'elle est composée de 4 parties
+    // Checking if it's an IPV4 ip
     if (parts.length != 4) {
       throw new IllegalArgumentException("L'adresse IP doit contenir exactement 4 parties séparées par des points.");
     }
 
-    // Vérifier que chaque partie est un nombre valide
+    // Checking that every number of the ip is valid
     for (String part : parts) {
       try {
         int value = Integer.parseInt(part);
 
-        // Vérifier que le nombre est dans la plage valide
         if (value < 0 || value > 255) {
           throw new IllegalArgumentException("Chaque partie de l'adresse IP doit être comprise entre 0 et 255.");
         }
@@ -43,7 +40,7 @@ public class TcpClient {
       }
     }
 
-    // Si tout est valide, assigner l'IP à l'attribut `host`
+    // If everything is valid, so we set the host ip
     this.host = ip;
   }
 
@@ -68,17 +65,18 @@ public class TcpClient {
 
       System.out.println("[Client " + CLIENT_ID + "] connected to " + this.host + ":" + PORT);
 
-      // READ width height winlenght ...
-      System.out.println("Waiting for Server, to send height, widht and len win to start the game.");
+      // Waiting to receive the ruleseet of the game
+      System.out.println("Waiting for Server, to send height, widht and lenght win to start the game.");
       String message  = in.readLine();
       String[] parses = message.split(" ");
-      // Check for [0] ? if it is a command
+      // Receiving from the server, the ruleset
       height    = Integer.parseInt(parses[1]);
       width     = Integer.parseInt(parses[2]);
       winLenght = Integer.parseInt(parses[3]);
-      System.out.println("SUCCES ! Width = " + width + ", Height = " + height + ", Win Lenght = " + winLenght);
+      // Indicate the Win lenght to win the game
+      System.out.println("SUCCES ! You have to put " + winLenght + " into the board to WIN !");
 
-      // Game part
+      // Setuping the game and display
       System.out.println("Init the boardgame and display ...");
       game = new GameBoard(height, width, winLenght);
       display = new Display(game);
@@ -87,6 +85,7 @@ public class TcpClient {
       System.out.println("Waiting for another player ...");
       // Receive PLAY or WAIT
       String playerTurn = in.readLine();
+      System.out.println("Good luck !");
 
       if(playerTurn.equals("PLAY")) {
         System.out.println("Game Start and you start playing ! :D");
@@ -95,8 +94,7 @@ public class TcpClient {
       }
 
       do {
-
-        // READ if game continue or not
+        // If it's his turn to play
         if(playerTurn.equals("PLAY")) {
 
           boolean errorOccured;
@@ -104,19 +102,25 @@ public class TcpClient {
             System.out.println("Chose a column between " + 0 + " et " + (game.getWidth() - 1));
             System.out.println("Use command : PLACE <column number>    => to play");
             String userInput = UserIO.getUserInput();
+            // Expecting command :
             // PLACE <column>
             out.write(userInput + "\n");
             out.flush();
 
             System.out.println("Waiting for server response ...");
-            if (in.readLine().equals("TOKEN_PLACED")) {
+
+            message = in.readLine();
+            if (message.equals("TOKEN_PLACED")) {
               errorOccured = false;
               System.out.println("TOKEN_PLACED");
-
               parses       = userInput.split(" ");
+              // If everything is ok, we place in the local player board
               chosenColumn = Integer.parseInt(parses[1]);
               game.addSlot(chosenColumn);
+            } else if(message.equals("OK_FF15")) {
+              errorOccured = false;
             } else {
+              // See which error occurred
               switch (parses[1]) {
                 case "-1":
                   System.out.println("ERROR : Unknown command.");
@@ -135,6 +139,8 @@ public class TcpClient {
             }
           } while (errorOccured);
           // Changing Player turn
+          if(message.equals("OK_FF15")) break;
+
           playerTurn = "WAIT";
 
         } else {
@@ -143,38 +149,46 @@ public class TcpClient {
           message = in.readLine();
           if(!message.equals("GAME_CONTINUE")) {
             // WIN or DRAW or LOSE
+            // The game stop
             break;
           }
 
+          // Expecting command :
+          // INSERTED <column>
           message = in.readLine();
           parses = message.split(" ");
-          // INSERTED <column>
           game.addSlot(Integer.parseInt(parses[1]));
+          // Giving information to the user
           System.out.println("The other player placed his token in column " + Integer.parseInt(parses[1]));
           System.out.println("This is now your turn ! ");
           // Changing player Turn
           playerTurn = "PLAY";
         }
 
-        // Changing the turn
+        // Changing the game turn and display the game board
         game.invertPlayerTurn();
         display.showGameBoard();
 
       } while (true);
 
-      if(message.equals("WIN")) {
+      // After loop ended, we check the game status
+      if(message.equals("OK_FF15")) {
+        System.out.println("You lost by forfeit ...");
+      }
+      else if(message.equals("WIN")) {
         System.out.println("YOU WIN !!");
       } else {
         // Receiving the last INSERTED to update the game board
+        // INSERTED <column>
         message = in.readLine();
         parses = message.split(" ");
-        // INSERTED <column>
         game.addSlot(Integer.parseInt(parses[1]));
+        // Giving information to the user
         System.out.println("The other player placed his token in column " + Integer.parseInt(parses[1]));
         display.showGameBoard();
         System.out.println("YOU LOSE !!");
       }
-
+      // End of communication
       System.out.println("[Client " + CLIENT_ID + "] closing connection");
 
     } catch (IOException e) {

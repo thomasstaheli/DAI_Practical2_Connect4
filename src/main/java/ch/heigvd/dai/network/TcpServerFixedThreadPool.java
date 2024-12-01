@@ -137,7 +137,7 @@ public class TcpServerFixedThreadPool {
         out.flush();
 
         String message;
-        String[] parses;
+        String[] parses = new String[1];
         boolean quit = false;
 
         while(!quit) {
@@ -184,9 +184,12 @@ public class TcpServerFixedThreadPool {
                   out.flush();
                   errorOccurred = true;
                 }
-              } else if(parses[0].equals("FF")) {
+              } else if(parses[0].equals("FF15")) {
                 System.out.println("User want to ff !!");
-                // TODO send back a cmd
+                out.write("OK_FF15" + "\n");
+                out.flush();
+                game.setGameStatus(this.playerColor == GameBoard.Slot.RED ?
+                        GameBoard.GameStatus.BLUE_WINS : GameBoard.GameStatus.RED_WINS);
                 errorOccurred = false;
               }
               else {
@@ -199,8 +202,12 @@ public class TcpServerFixedThreadPool {
 
             display.showGameBoard();
 
-            if(!game.checkDrawCondition()) {
-              game.checkWinCondition(sharedInput.getChosenColum(), sharedInput.getChosenRow());
+            // Si la personne veut FF15, alors pas besoin de regarder la condition de victoire
+            if(!message.equals("FF15")) {
+              // S'il n'y a pas d'égalité alors ensuite on regarde s'il y a une victoire
+              if(!game.checkDrawCondition()) {
+                game.checkWinCondition(sharedInput.getChosenColum(), sharedInput.getChosenRow());
+              }
             }
 
             game.invertPlayerTurn();
@@ -241,7 +248,6 @@ public class TcpServerFixedThreadPool {
               out.write("INSERTED " + sharedInput.getChosenColum() + "\n");
               out.flush();
             }
-            break;
           }
         }
 
