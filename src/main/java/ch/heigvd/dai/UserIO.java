@@ -34,19 +34,19 @@ public class UserIO {
     return input;
   }
 
-  public void setChoosenColum(int value) {
+  public void setChosenColum(int value) {
     this.choosenColum = value;
   }
 
-  public void setChoosenRow(int value) {
+  public void setChosenRow(int value) {
     this.choosenRow = value;
   }
 
-  public int getChoosenColum() {
+  public int getChosenColum() {
     return this.choosenColum;
   }
 
-  public int getChoosenRow() {
+  public int getChosenRow() {
     return this.choosenRow;
   }
 

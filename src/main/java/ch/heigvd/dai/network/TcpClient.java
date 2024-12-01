@@ -10,10 +10,9 @@ import java.nio.charset.StandardCharsets;
 
 public class TcpClient {
 
-    private String host;
+    private final String host;
     private static final int PORT = 6433;
     private static final int CLIENT_ID = (int) (Math.random() * 1000000);
-    private static final String TEXTUAL_DATA = "PING";
 
     public TcpClient(String ip) throws IllegalArgumentException {
         // Vérifier que l'adresse IP est non null

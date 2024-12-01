@@ -7,7 +7,6 @@ import ch.heigvd.dai.UserIO;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
-import java.sql.Time;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -18,8 +17,6 @@ public class TcpServerFixedThreadPool {
   private static final int PORT = 6433;
   private static final int SERVER_ID = (int) (Math.random() * 1000000);
   private static final int NUMBER_OF_THREADS = 2;
-  private int numberOfPlayerConnected;
-  private ClientHandler[] playerConnected;
 
   private static final int height = 5;
   private static final int width = 5;
@@ -27,8 +24,8 @@ public class TcpServerFixedThreadPool {
 
   public TcpServerFixedThreadPool() {
 
-    this.numberOfPlayerConnected = 0;
-    this.playerConnected = new ClientHandler[NUMBER_OF_THREADS];
+    int numberOfPlayerConnected = 0;
+    ClientHandler[] playerConnected = new ClientHandler[NUMBER_OF_THREADS];
     GameBoard game = new GameBoard(height, width, winLenght);
     Display display = new Display(game);
     GameBoard.Slot gamePlayerTurn = GameBoard.Slot.RED;
@@ -42,13 +39,13 @@ public class TcpServerFixedThreadPool {
 
       while (!serverSocket.isClosed()) {
         // Attente de deux joueurs
-        if(this.numberOfPlayerConnected == 2) {
+        if(numberOfPlayerConnected == 2) {
           // We are indicating that the game is starting
-          this.playerConnected[0].isGameStarting = true;
-          this.playerConnected[1].isGameStarting = true;
+          playerConnected[0].isGameStarting = true;
+          playerConnected[1].isGameStarting = true;
           System.out.println("Waiting until the game finished ...");
           // Attente que la partie se finisse
-          while(!this.playerConnected[0].isGameFinished) {
+          while(!playerConnected[0].isGameFinished) {
             try {
               TimeUnit.SECONDS.sleep(1);
             } catch (InterruptedException e) {
@@ -58,8 +55,8 @@ public class TcpServerFixedThreadPool {
           System.out.println("Game finished, server restarting ...");
           // Reseting local variable, to restart a new Connect 4 game
           gamePlayerTurn = GameBoard.Slot.RED;
-          this.numberOfPlayerConnected = 0;
-          this.playerConnected = new ClientHandler[NUMBER_OF_THREADS];
+          numberOfPlayerConnected = 0;
+          playerConnected = new ClientHandler[NUMBER_OF_THREADS];
           // Reseting the board and resetupping the display
           game = new GameBoard(height, width, winLenght);
           display = new Display(game);
@@ -68,10 +65,10 @@ public class TcpServerFixedThreadPool {
           // Tant qu'il n'y a pas deux joueurs
           Socket clientSocket = serverSocket.accept();
           // Création d'un nouveau joueur
-          this.playerConnected[numberOfPlayerConnected] =
+          playerConnected[numberOfPlayerConnected] =
                   new ClientHandler(clientSocket, game, display, gamePlayerTurn, sharedInput);
-          executor.submit(this.playerConnected[numberOfPlayerConnected]);
-          ++this.numberOfPlayerConnected;
+          executor.submit(playerConnected[numberOfPlayerConnected]);
+          ++numberOfPlayerConnected;
           // Si le premier joeuur commence à jouer alors l'autre commence par attendre
           gamePlayerTurn = gamePlayerTurn == GameBoard.Slot.BLUE ? GameBoard.Slot.RED : GameBoard.Slot.BLUE;
         }
@@ -90,9 +87,6 @@ public class TcpServerFixedThreadPool {
     private final UserIO sharedInput;
     private boolean isGameStarting;
     private boolean isGameFinished;
-
-    // TODO : Debug
-    private int id;
 
     public ClientHandler(Socket socket, GameBoard game, Display display, GameBoard.Slot playerColor, UserIO sharedInput) {
       this.socket = socket;
@@ -152,10 +146,10 @@ public class TcpServerFixedThreadPool {
             parses = message.split(" ");
 
             if(parses[0].equals("PLACE")) {
-              sharedInput.setChoosenColum(Integer.parseInt(parses[1]));
+              sharedInput.setChosenColum(Integer.parseInt(parses[1]));
               // The addSlot method return the row, where the token was placed
-              sharedInput.setChoosenRow(game.addSlot(sharedInput.getChoosenColum()));
-              System.out.println("COLUM : " + sharedInput.getChoosenColum() + " ROW : " + sharedInput.getChoosenRow());
+              sharedInput.setChosenRow(game.addSlot(sharedInput.getChosenColum()));
+              System.out.println("COLUM : " + sharedInput.getChosenColum() + " ROW : " + sharedInput.getChosenRow());
               out.write("TOKEN_PLACED" + "\n");
               out.flush();
             } else {
@@ -167,7 +161,7 @@ public class TcpServerFixedThreadPool {
             if(game.checkDrawCondition()) {
               System.out.println("DRAW");
             } else {
-              game.checkWinCondition(sharedInput.getChoosenColum(), sharedInput.getChoosenRow());
+              game.checkWinCondition(sharedInput.getChosenColum(), sharedInput.getChosenRow());
             }
 
             game.invertPlayerTurn();
@@ -186,7 +180,7 @@ public class TcpServerFixedThreadPool {
             System.out.println("Sending to the other player : game continue and inserted cmd");
             out.write("GAME_CONTINUE" + "\n");
             out.flush();
-            out.write("INSERTED " + sharedInput.getChoosenColum() + "\n");
+            out.write("INSERTED " + sharedInput.getChosenColum() + "\n");
             out.flush();
           }  else if(game.getGameStatus() == GameBoard.GameStatus.DRAW) {
             System.out.println("GAME DRAW !");
@@ -208,8 +202,8 @@ public class TcpServerFixedThreadPool {
         }
 
         isGameFinished = true;
-
         System.out.println("[Server " + SERVER_ID + "] closing connection");
+
       } catch (IOException | InterruptedException e) {
         System.out.println("[Server " + SERVER_ID + "] exception: " + e);
       }
