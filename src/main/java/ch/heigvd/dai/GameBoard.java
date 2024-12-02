@@ -45,7 +45,7 @@ public class GameBoard {
   }
 
   public int addSlot(int column) {
-    //returns a true if there was an empty slot available
+    // returns a true if there was an empty slot available
     for (int i = height - 1; i >= 0; i--) {
       if (board[i][column] == Slot.EMPTY){
         board[i][column] = this.playerTurn;

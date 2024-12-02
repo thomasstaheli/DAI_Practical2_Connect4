@@ -8,12 +8,22 @@ import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * This class represents a TCP client that connects to a game server, communicates with it,
+ * and manages the gameplay from the client side.
+ */
 public class TcpClient {
 
   private final String host;
   private static final int PORT = 6433;
   private static final int CLIENT_ID = (int) (Math.random() * 1000000);
 
+  /**
+   * Constructor for TcpClient.
+   *
+   * @param ip The server's IP address.
+   * @throws IllegalArgumentException if the provided IP address is null or invalid.
+   */
   public TcpClient(String ip) throws IllegalArgumentException {
     // Checking the ip addr
     if (ip == null) {
@@ -44,6 +54,9 @@ public class TcpClient {
     this.host = ip;
   }
 
+  /**
+   * Runs the TCP client to connect to the server, play the game, and handle game logic.
+   */
   public void run() {
 
     System.out.println("[Client " + CLIENT_ID + "] starting with id " + CLIENT_ID);
