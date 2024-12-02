@@ -111,6 +111,10 @@ The error code is as follow:
 
 ![functionnal_example](./img/protocol_functionnal.png)
 
+## Functionnal example with FF15 command
+
+![functionnal_FF15_example](./img/protocol_functionnal_and_FF.png)
+
 ## Invalid command or input example
 
 ![invalid_example](./img/protocol_invalid_examples.png)
