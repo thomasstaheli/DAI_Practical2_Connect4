@@ -1,4 +1,4 @@
-package ch.heigvd.dai;
+package ch.heigvd.dai.util;
 
 public enum Direction {
   EAST(1, 0),

@@ -2,10 +2,7 @@ package ch.heigvd.dai.commands;
 
 import java.util.concurrent.Callable;
 
-import ch.heigvd.dai.Display;
-import ch.heigvd.dai.GameBoard;
 import ch.heigvd.dai.network.TcpClient;
-import ch.heigvd.dai.userIO;
 
 import picocli.CommandLine;
 

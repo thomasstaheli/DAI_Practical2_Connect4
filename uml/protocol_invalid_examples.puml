@@ -13,13 +13,11 @@ end note
 
 client1->server : Establish connection
 server<-->client1 : Connection established
-client1->server : READY
-server->client1 : WAITING
+server->client1 : INIT <height> <widht> <winLenght>
 
 client2->server : Establish connection
 server<-->client2 : Connection established
-client2->server : READY
-server->client2 : GAME START
+server->client2 : INIT <height> <widht> <winLenght>
 
 == Invalid entry example ==
 
@@ -36,6 +34,14 @@ server->client1 : ERROR 2
 
 client1->server : PLACE 10
 server->client1 : ERROR 1
+
+note right of client1
+Let's admit that the gameboard
+column 2 is full.
+end note
+
+client1->server : PLACE 2
+server->client1 : ERROR 3
 
 == Invalid command example ==
 
