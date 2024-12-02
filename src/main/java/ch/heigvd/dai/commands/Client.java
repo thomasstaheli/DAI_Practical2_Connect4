@@ -15,7 +15,6 @@ public class Client implements Callable<Integer>{
             description = "The ip address of the server where the game is hosted\n",
             required = true
     )
-
     protected String ip;
 
     @Override
