@@ -4,16 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="f4e76886-5405-4bb9-ae6c-6200243be0ee" name="Changes" comment="test">
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/img/protocol_invalid_examples.png" beforeDir="false" afterPath="$PROJECT_DIR$/img/protocol_invalid_examples.png" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Display.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/Display.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/GameBoard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/network/TcpClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/network/TcpClient.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/network/TcpServerFixedThreadPool.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/network/TcpServerFixedThreadPool.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/util/UserIO.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/ch/heigvd/dai/util/UserIO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/uml/protocol_invalid_examples.puml" beforeDir="false" afterPath="$PROJECT_DIR$/uml/protocol_invalid_examples.puml" afterDir="false" />
-    </list>
+    <list default="true" id="f4e76886-5405-4bb9-ae6c-6200243be0ee" name="Changes" comment="test" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -140,7 +131,7 @@
       <workItem from="1733051479907" duration="1157000" />
       <workItem from="1733060713911" duration="758000" />
       <workItem from="1733081299440" duration="8983000" />
-      <workItem from="1733162614657" duration="2820000" />
+      <workItem from="1733162614657" duration="3151000" />
     </task>
     <servers />
   </component>
