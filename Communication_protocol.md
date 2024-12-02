@@ -32,25 +32,20 @@ Once the game ends, the server send a GameOver message to both player clients an
 
 # Section 3 - Messages
 
-## Saying ready
+## Client connect to the server
 
-The client notifies a ready state when he wants to start the game
-(A player slot is set to occupied as soon as he joins ->
-other players cannot join as soon as 2 player slots are occupied)
-The ready state only serves as waiting time before the
-game start.
+The server notifies the client the rulesets of the game, when he just connected.
+After that, when two players are connected, the server say wich one start playing and wich one start waiting.
 
 ### Request
 
-``` text
-READY
-```
+None
 
 ### Response
 
-- `WAITING` : If the player is the first, he waits for
-another player to join and be ready.
-- `GAME START` : The game starts because two players are ready, and the player who receive this, will play first.
+- `INIT <height board> <width board> <win lenght> ` : The server send to the client the ruletset of the game, like the width and the height of the board and the number of tokens that should be place to win the game.
+- `PLAY` : Indicating that the game start and the player place first.
+- `WAIT` : Indicating that the game start and the player is not playing first.
 
 ## Place a token in the grid
 
@@ -64,22 +59,26 @@ PLACE <colomn number>
 ```
 
 ### Reponse to the player who placed the token
-  
-- `INVALID`      : The desired column is non-existent in the gameboard
-- `COLUMN FULL`  : The desired column is already filled with tokens.
-- `WIN`          : The placed token results in a Win of the player.
-- `DRAW`         : The placed token fills the gameboard completely resulting in a draw.
-- `TOKEN PLACED` : The placed token is placed propreply in the column, the game continues.
+
+- `TOKEN_PLACED` : The placed token is placed propreply in the column, the game continues.
+- `ERROR <code>` : an error occurred while the PLACE command. The error code is an integer between 1 and 3 inclusive. 
+  - 1 : The index is incorrect, the number is not between 0 and gameboard.width - 1.
+  - 2 : The index is not a number.
+  - 3 : The column number is already full.
 
 ### Reponse to the player who didn't placed the token
 
-The second response is the response that is sent to the other player, to indicate where the
-new token has been placed
+The server send two response in the row, the first one is to indicate the game status and the second one is to indicate where the token has been placed.
 
-- `INSERTED <column number>` : The placed token by the other player is indicated to the waiting player.
-- `GAME CONTINUE` : The placed token by the other player did not succes to a win or a draw, so the game continues.
+#### First response
+
+- `GAME_CONTINUE` : The placed token by the other player did not succes to a win or a draw, so the game continues.
 - `LOSE`   : The placed token by the other player results in a loss of the game.
 - `DRAW`   : The placed token by the other player results in a draw of the game.
+
+#### Second response
+
+- `INSERTED <column number>` : The placed token by the other player is indicated to the waiting player.
 
 ## Forfeit
 
@@ -88,7 +87,7 @@ The client want to FF.
 ### Request
 
 ``` text
-FF
+FF15
 ```
 
 ### Response
@@ -96,27 +95,15 @@ FF
 - `LOSE` : A player declared forfeit and results in a Loss of the player.
 - `WIN`  : A player declared forfeit and results in a Win of the player.
 
-## Quit the server
-
-### Request
-
-``` text
-QUIT
-```
-
-### Response
-
-None.
-
 ## Invalid message
 
 If the server receives an unknown message, it must send an error message to the client.
 
 ### Response
 
-- `ERROR <code>` : an error occurred while sending the message. The error code is an integer between -1 and -1 inclusive. 
+- `ERROR <code>` : an error occurred while sending the message. The error code is an integer. 
 The error code is as follow:
-  - -1: invalid message
+  - -1 : invalid command
 
 # Section 4 - Examples
 
