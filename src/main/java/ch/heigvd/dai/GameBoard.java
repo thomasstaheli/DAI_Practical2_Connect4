@@ -1,6 +1,6 @@
 package ch.heigvd.dai;
 
-
+import ch.heigvd.dai.util.Direction;
 
 public class GameBoard {
 
@@ -19,9 +19,10 @@ public class GameBoard {
   private Slot playerTurn;
   private final Slot[][] board;
   private final int maxTurns;
-  private final int countTurnPlayed;
+  private int countTurnPlayed;
+  private GameStatus gameStatus;
 
-  GameBoard(int height, int width, int winLength){
+  public GameBoard(int height, int width, int winLength) {
     this.height = height;
     this.width = width;
     this.board = new Slot[height][width];
@@ -30,11 +31,12 @@ public class GameBoard {
     this.playerTurn = Slot.RED;
     this.countTurnPlayed = 0;
     this.maxTurns = this.height * this.width;
+    this.gameStatus = GameStatus.GAME_CONTINUE;
 
     this.fillGameBoard(Slot.EMPTY);
   }
 
-  void fillGameBoard(Slot slot) {
+  private void fillGameBoard(Slot slot) {
     for (int i = 0; i < height; i++) {
       for (int j = 0; j < width; j++) {
         board[i][j] = slot;
@@ -42,18 +44,19 @@ public class GameBoard {
     }
   }
 
-  int addSlot(int column) {
-    //returns a true if there was an empty slot available
+  public int addSlot(int column) {
+    // returns a true if there was an empty slot available
     for (int i = height - 1; i >= 0; i--) {
       if (board[i][column] == Slot.EMPTY){
         board[i][column] = this.playerTurn;
+        ++this.countTurnPlayed;
         return i;
       }
     }
     return -1;
   }
 
-  boolean checkDirection(int column, int row, Direction direction){
+  private boolean checkDirection(int column, int row, Direction direction){
     // alignedSlots start with 1 because we have to count the actual dot
     int alignedSlots = 1;
 
@@ -64,7 +67,7 @@ public class GameBoard {
 
       //checking for board bounds
       if (newRow < 0 || newRow >= height || newColumn < 0 || newColumn >= width ||
-        board[newRow][newColumn] != this.playerTurn) { //checking for the right color
+              board[newRow][newColumn] != this.playerTurn) { // checking for the right color
         return false;
       }
       else {
@@ -75,7 +78,7 @@ public class GameBoard {
     return alignedSlots >= winLength;
   }
 
-  boolean checkAllDirections(int column, int row) {
+  private boolean checkAllDirections(int column, int row) {
 
     for (Direction direction : Direction.values()) {
       if(checkDirection(column, row, direction)) {
@@ -93,14 +96,23 @@ public class GameBoard {
   public GameStatus checkWinCondition(int chosenColumn, int chosenRow) {
 
     if(this.checkAllDirections(chosenColumn, chosenRow)) {
-      return playerTurn == Slot.RED ? GameStatus.RED_WINS : GameStatus.BLUE_WINS;
+      this.gameStatus = playerTurn == Slot.RED ? GameStatus.RED_WINS : GameStatus.BLUE_WINS;
+      return gameStatus;
     }
 
     return GameStatus.GAME_CONTINUE;
   }
 
   public boolean checkDrawCondition() {
-    return this.countTurnPlayed >= this.maxTurns;
+    boolean drawCondition = this.countTurnPlayed >= this.maxTurns;
+
+    if(drawCondition) {
+      this.gameStatus = GameStatus.DRAW;
+    } else {
+      this.gameStatus = GameStatus.GAME_CONTINUE;
+    }
+
+    return drawCondition;
   }
 
   public Slot getBoardSlot(int row, int column) {
@@ -113,6 +125,22 @@ public class GameBoard {
 
   public int getWidth() {
     return this.width;
+  }
+
+  public Slot getPlayerTurn() {
+    return this.playerTurn;
+  }
+
+  public GameStatus getGameStatus() {
+    return this.gameStatus;
+  }
+
+  public void setGameStatus(GameStatus gameStatus) {
+    this.gameStatus = gameStatus;
+  }
+
+  public int getWinLength() {
+    return this.winLength;
   }
 
 }
