@@ -15,7 +15,7 @@ import java.nio.charset.StandardCharsets;
 public class TcpClient {
 
   private final String host;
-  private static final int PORT = 6433;
+  private final int port;
   private static final int CLIENT_ID = (int) (Math.random() * 1000000);
 
   /**
@@ -24,7 +24,7 @@ public class TcpClient {
    * @param ip The server's IP address.
    * @throws IllegalArgumentException if the provided IP address is null or invalid.
    */
-  public TcpClient(String ip) throws IllegalArgumentException {
+  public TcpClient(String ip, int port) throws IllegalArgumentException {
     // Checking the ip addr
     if (ip == null) {
       throw new IllegalArgumentException("L'adresse IP ne peut pas être nulle.");
@@ -52,6 +52,7 @@ public class TcpClient {
 
     // If everything is valid, so we set the host ip
     this.host = ip;
+    this.port = port;
   }
 
   /**
@@ -60,7 +61,7 @@ public class TcpClient {
   public void run() {
 
     System.out.println("[Client " + CLIENT_ID + "] starting with id " + CLIENT_ID);
-    System.out.println("[Client " + CLIENT_ID + "] connecting to " + this.host + ":" + PORT);
+    System.out.println("[Client " + CLIENT_ID + "] connecting to " + this.host + ":" + this.port);
 
     int width, height, winLenght;
     int chosenColumn;
@@ -68,7 +69,7 @@ public class TcpClient {
     GameBoard game;
     Display display;
 
-    try (Socket socket = new Socket(this.host, PORT);
+    try (Socket socket = new Socket(this.host, this.port);
          BufferedReader in =
                  new BufferedReader(
                          new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
@@ -76,7 +77,7 @@ public class TcpClient {
                  new BufferedWriter(
                          new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8))) {
 
-      System.out.println("[Client " + CLIENT_ID + "] connected to " + this.host + ":" + PORT);
+      System.out.println("[Client " + CLIENT_ID + "] connected to " + this.host + ":" + this.port);
 
       // Waiting to receive the ruleseet of the game
       System.out.println("Waiting for Server, to send height, widht and lenght win to start the game.");
