@@ -21,9 +21,9 @@ cd DAI_Practical2_Connect4
 ## Build the Project (JAR)
 To build the JAR, run the following command from the root of the repository:
 
+```shell
 ./mvnw dependency:go-offline clean compile package
-
-## Compile 
+``` 
 
 ## Docker
 
