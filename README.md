@@ -68,11 +68,16 @@ docker tag connect4 ghcr.io/<username>/connect4:latest
 ```shell
 docker push ghcr.io/<username>/connect4
 ```
-
-#### Pull the image
+### Pull the image
 
 ```shell
 docker pull ghcr.io/<username>/connect4
+```
+
+If you want to pull the image of this project :
+
+```shell
+docker pull ghcr.io/thomasstaheli/connect4
 ```
 
 ## Run as Server
