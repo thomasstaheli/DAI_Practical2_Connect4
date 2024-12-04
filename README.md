@@ -99,10 +99,13 @@ For the server and the client, there is two possibilities to run the project.
 > `<exposed port>` = exposed port on your current machine
 
 > `<port container>` = exposed port on container
+
 ```shell
 docker run -p <exposed port>:<port container> connect4 server -p <port> -h <board height> -w <board width> -wl <win lenght condition>
 ```
+
 Example :
+
 ```shell
 docker run -p 6433:6433 connect4 server
 ```
@@ -112,14 +115,16 @@ docker run -p 6433:6433 connect4 server
 ```shell
 java -jar target/DAI_Practical2_Connect4-1.0-SNAPSHOT.jar server -p <port> -h <board height> -w <board width> -wl <win lenght condition>
 ```
+
 Example :
 
 You can run with the default value :
+
 ```shell
 java -jar target/DAI_Practical2_Connect4-1.0-SNAPSHOT.jar server 
 ```
 
-Or width other values :
+Or with your values :
 
 ```shell
 java -jar target/DAI_Practical2_Connect4-1.0-SNAPSHOT.jar server  -p 6464 -h 10 -w 10 -wl 6
@@ -135,7 +140,8 @@ java -jar target/DAI_Practical2_Connect4-1.0-SNAPSHOT.jar server  -p 6464 -h 10 
 
 ### With Docker
 
-Le client se connecte sur le port <exposed port>
+For the port, you have to specify the `<exposed port>` as mentionned in the server section.
+
 ```shell
 docker run -it connect4 client -p <port> -a <ip>
 ```
@@ -147,12 +153,14 @@ java -jar target/DAI_Practical2_Connect4-1.0-SNAPSHOT.jar client -p <port> --ip 
 ```
 
 Example :
+
 You can run with the default value :
+
 ```shell
 java -jar target/DAI_Practical2_Connect4-1.0-SNAPSHOT.jar client
 ```
 
-Or width other values :
+Or with your values :
 
 ```shell
 java -jar target/DAI_Practical2_Connect4-1.0-SNAPSHOT.jar client -p 6464 -a 172.16.32.24
@@ -166,7 +174,7 @@ Use the PLACE command to place insert a token in a column :
 ```shell
 PLACE <column number>
 ```
-> If the board size is five, so you can enter en number between 0 and 4.
+> If the board size is five, you can enter a number between 0 and 4.
 
 Use the FF15 command to stop the game (you don't have to wait 15 minutes before activating it) :
 ```shell
