@@ -11,6 +11,24 @@ Since we use network communication, we had to define a protocol to transmit the 
 
 ![client interface](./img/previsualisation.png)
 
+## Code Structure
+The project is divided into 4 packages: `connect4`, `commands`, `network`and `server`:
+### connect4
+The `connect4` package contains the classes :
+- `GameBoard` : A class that implements all the logic needed for the game (check if a player has won, check if the board is full, etc.)
+- `Display` : A class that implements all the logic and eye-candy needed to display the connect4 board in the console
+### commands
+The `commands` package contains the classes and interfaces necessary to implement the PicoCLI command-line interface.
+### network
+The `network` package contains the classes and interfaces necessary to implement the network communication between the client and the server.
+The server has a pool of 2 threads in order to handle 2 clients simultaneously.
+The communication between the clients and the server is done through our protocol defined in the
+"Communication_protocol.md" file.
+### util
+The `util` package contains some utility classes such as :
+- `Direction` : Enum class to define the 4 directions (UP, DOWN, LEFT, RIGHT) and is useful for the game logic
+- `UserIO` : A class with all the necessary methods to interact with the user (print, read, etc.)
+
 ## Basic Tools
 
 To run tbis project, you will need at least, this java version :
